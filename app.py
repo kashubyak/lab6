@@ -15,11 +15,7 @@ from sqlalchemy.exc import IntegrityError
 from flask_dance.contrib.google import make_google_blueprint, google
 from dotenv import load_dotenv
 
-load_dotenv() # Завантажуємо змінні з .env файлу
-
-# Ці змінні тепер беруться з .env файлу автоматично, якщо вони там є
-# os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1' 
-# os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
+load_dotenv() 
 
 RECAPTCHA_SITE_KEY = '6LcM6xssAAAAAHiYf3RLqakle5VFqVXoOCCAbk0C' 
 RECAPTCHA_SECRET_KEY = '6LcM6xssAAAAAMXXQRTCv-yb_1w3SEQ7FTlWgUNz' 
@@ -491,7 +487,7 @@ def setup_2fa():
         else:
             flash('Неправильний код 2FA. Спробуйте ще раз.', 'danger')
             
-    return render_template('setup_2fa.html', qr_code_base64=qr_code_base64)
+    return render_template('setup_2fa.html', qr_code_base64=qr_code_base64, secret=user.two_factor_secret)
 
 @app.route('/profile/disable_2fa', methods=['POST'])
 def disable_2fa():
