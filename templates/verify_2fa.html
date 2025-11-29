@@ -1,0 +1,21 @@
+{% extends "base.html" %} {% block content %}
+<h2>Двохфакторна Аутентифікація</h2>
+<p>
+	Будь ласка, введіть 6-значний код зі свого додатку-автентифікатора (наприклад, Google
+	Authenticator).
+</p>
+<form method="POST">
+	<label for="token">Код 2FA:</label>
+	<input
+		type="text"
+		id="token"
+		name="token"
+		maxlength="6"
+		pattern="\d{6}"
+		title="Код повинен містити 6 цифр"
+		required
+	/>
+
+	<button type="submit">Підтвердити</button>
+</form>
+{% endblock %}

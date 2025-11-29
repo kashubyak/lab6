@@ -1,0 +1,59 @@
+{% extends "base.html" %} {% block content %}
+<h2>Журнал Спроб Входу (Адмін Панель)</h2>
+<p>
+	Тут відображаються всі спроби входу в систему, як успішні, так і невдалі. Це допомагає
+	адміністраторам відстежувати підозрілу активність.
+</p>
+
+<style>
+	.log-table {
+		width: 100%;
+		border-collapse: collapse;
+		margin-top: 20px;
+	}
+	.log-table th,
+	.log-table td {
+		border: 1px solid #ddd;
+		padding: 10px;
+		text-align: left;
+	}
+	.log-table th {
+		background-color: #f2f2f2;
+	}
+	.success-status {
+		color: green;
+		font-weight: bold;
+	}
+	.failure-status {
+		color: red;
+		font-weight: bold;
+	}
+</style>
+
+<table class="log-table">
+	<thead>
+		<tr>
+			<th>Email</th>
+			<th>IP-адреса</th>
+			<th>Час</th>
+			<th>Статус</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for log in logs %}
+		<tr>
+			<td>{{ log.email }}</td>
+			<td>{{ log.ip_address }}</td>
+			<td>{{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+			<td class="{% if log.success %}success-status{% else %}failure-status{% endif %}">
+				{% if log.success %} Успіх {% else %} Невдача {% endif %}
+			</td>
+		</tr>
+		{% else %}
+		<tr>
+			<td colspan="4">Журнал спроб входу порожній.</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

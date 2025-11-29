@@ -1,0 +1,27 @@
+{% extends "base.html" %} {% block content %}
+<h2>Профіль Користувача</h2>
+<p>Ви увійшли як: <strong>{{ user_email }}</strong></p>
+
+<h3>Налаштування Безпеки</h3>
+<p>
+  <strong>Двохфакторна аутентифікація (2FA):</strong>
+  {% if user_2fa_enabled %}
+  <span class="success">АКТИВОВАНО</span>
+  <form method="POST" action="{{ url_for('disable_2fa') }}" style="display: inline-block; padding: 0; border: none;">
+    <button type="submit" class="danger-btn" onclick="return confirm('Ви впевнені, що хочете вимкнути 2FA?')">Вимкнути 2FA</button>
+  </form>
+  {% else %}
+  <span class="danger">ВИМКНЕНО</span>
+  <a href="{{ url_for('setup_2fa') }}">
+    <button type="button" class="secondary-btn">Налаштувати 2FA</button>
+  </a>
+  {% endif %}
+</p>
+
+<h3>OAuth/Соціальний Вхід</h3>
+<p>
+  <strong>Статус:</strong> Не налаштовано. (Буде реалізовано в наступному етапі).
+</p>
+
+<p><a href="{{ url_for('logout') }}">Вийти з облікового запису</a></p>
+{% endblock %}

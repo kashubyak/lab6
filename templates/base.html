@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="uk">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Безпека Облікових Записів</title>
+	</head>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #f4f4f9;
+			color: #333;
+		}
+		header {
+			background-color: #007bff;
+			color: white;
+			padding: 1em 20px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		header h1 {
+			margin: 0;
+			font-size: 1.5em;
+		}
+		nav a {
+			color: white;
+			text-decoration: none;
+			margin-left: 15px;
+			padding: 5px 10px;
+			border-radius: 4px;
+			transition: background-color 0.3s;
+		}
+		nav a:hover {
+			background-color: #0056b3;
+		}
+		main {
+			padding: 20px;
+			max-width: 900px;
+			margin: 20px auto;
+			background-color: white;
+			border-radius: 8px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+		footer {
+			text-align: center;
+			padding: 10px;
+			margin-top: 20px;
+			color: #777;
+		}
+		.flashes p {
+			padding: 10px;
+			margin-bottom: 10px;
+			border-radius: 5px;
+			border: 1px solid transparent;
+		}
+		.success {
+			background-color: #d4edda;
+			color: #155724;
+			border-color: #c3e6cb;
+		}
+		.info {
+			background-color: #d1ecf1;
+			color: #0c5460;
+			border-color: #bee5eb;
+		}
+		.warning {
+			background-color: #fff3cd;
+			color: #856404;
+			border-color: #ffeeba;
+		}
+		.danger,
+		.error {
+			background-color: #f8d7da;
+			color: #721c24;
+			border-color: #f5c6cb;
+		}
+		form {
+			display: flex;
+			flex-direction: column;
+			gap: 15px;
+			padding: 20px;
+			border: 1px solid #ccc;
+			border-radius: 6px;
+		}
+		input[type='email'],
+		input[type='password'],
+		input[type='text'] {
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			width: 100%;
+			box-sizing: border-box;
+		}
+		button[type='submit'] {
+			background-color: #28a745;
+			color: white;
+			padding: 10px 15px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			transition: background-color 0.3s;
+		}
+		button[type='submit']:hover {
+			background-color: #218838;
+		}
+		.secondary-btn {
+			background-color: #6c757d;
+		}
+		.secondary-btn:hover {
+			background-color: #5a6268;
+		}
+		.danger-btn {
+			background-color: #dc3545;
+		}
+		.danger-btn:hover {
+			background-color: #c82333;
+		}
+	</style>
+	<body>
+		<header>
+			<h1>Система Управління Обліковими Записами</h1>
+			<nav>
+				<a href="{{ url_for('index') }}">Головна</a>
+				{% if 'user_id' in session %}
+				<a href="{{ url_for('profile') }}">Профіль</a>
+				<a href="{{ url_for('logout') }}">Вихід ({{ session['user_email'] }})</a>
+				<a href="{{ url_for('admin_logs') }}">Логи</a>
+				{% else %}
+				<a href="{{ url_for('register') }}">Реєстрація</a>
+				<a href="{{ url_for('login') }}">Вхід</a>
+				{% endif %}
+			</nav>
+		</header>
+
+		<main>
+			{% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
+			<div class="flashes">
+				{% for category, message in messages %}
+				<p class="{{ category }}">{{ message }}</p>
+				{% endfor %}
+			</div>
+			{% endif %} {% endwith %} {% block content %}{% endblock %}
+		</main>
+
+		<footer>
+			<p>&copy; 2025 Безпека програм та даних</p>
+		</footer>
+
+		{% block scripts %}{% endblock %}
+	</body>
+</html>

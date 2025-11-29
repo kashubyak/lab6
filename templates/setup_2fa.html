@@ -1,0 +1,43 @@
+{% extends "base.html" %} {% block content %}
+<h2>Налаштування Двохфакторної Аутентифікації (2FA)</h2>
+
+<div
+	style="text-align: center; margin-bottom: 20px; padding: 10px; border: 1px dashed #ccc"
+>
+	<p>
+		<strong>Крок 1:</strong> Відскануйте цей QR-код своїм додатком-автентифікатором
+		(наприклад, Google Authenticator або Authy).
+	</p>
+	{% if qr_code_base64 %}
+	<img
+		src="data:image/png;base64,{{ qr_code_base64 }}"
+		alt="QR Code для 2FA"
+		style="max-width: 250px; height: auto; border: 5px solid #333; border-radius: 5px"
+	/>
+	{% else %}
+	<p class="error">Помилка генерації QR-коду.</p>
+	{% endif %}
+	<p style="margin-top: 15px">
+		**Увага:** Якщо ви не можете відсканувати код, введіть секретний ключ вручну.
+	</p>
+</div>
+
+<form method="POST">
+	<p>
+		<strong>Крок 2:</strong> Введіть код, згенерований додатком, щоб підтвердити
+		налаштування:
+	</p>
+	<label for="token">Код 2FA для підтвердження:</label>
+	<input
+		type="text"
+		id="token"
+		name="token"
+		maxlength="6"
+		pattern="\d{6}"
+		title="Код повинен містити 6 цифр"
+		required
+	/>
+
+	<button type="submit">Активувати 2FA</button>
+</form>
+{% endblock %}

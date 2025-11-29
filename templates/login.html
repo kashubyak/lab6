@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block content %}
+<h2>Вхід у Систему</h2>
+<form method="POST">
+	<label for="email">Email:</label><br />
+	<input type="email" id="email" name="email" required /><br /><br />
+
+	<label for="password">Пароль:</label><br />
+	<input type="password" id="password" name="password" required /><br /><br />
+
+	<button type="submit">Увійти</button>
+
+	<div
+		style="
+			margin-top: 15px;
+			text-align: center;
+			border-top: 1px solid #ccc;
+			padding-top: 15px;
+		"
+	>
+		<a href="{{ url_for('google.login') }}" style="text-decoration: none">
+			<button type="button" style="background-color: #db4437; color: white; width: 100%">
+				Увійти через Google
+			</button>
+		</a>
+	</div>
+
+	<p style="margin-top: 15px">
+		<a href="{{ url_for('forgot_password') }}">Забули пароль?</a>
+	</p>
+</form>
+{% endblock %}

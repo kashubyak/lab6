@@ -1,0 +1,11 @@
+Flask
+Flask-SQLAlchemy
+Flask-Mail
+Flask-Dance
+requests-oauthlib
+Werkzeug
+itsdangerous
+pyotp
+qrcode
+Pillow
+requests
