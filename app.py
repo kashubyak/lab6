@@ -13,15 +13,19 @@ import pyotp
 import qrcode
 from sqlalchemy.exc import IntegrityError
 from flask_dance.contrib.google import make_google_blueprint, google
+from dotenv import load_dotenv
 
-os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
+load_dotenv() # Завантажуємо змінні з .env файлу
+
+# Ці змінні тепер беруться з .env файлу автоматично, якщо вони там є
+# os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1' 
+# os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
 RECAPTCHA_SITE_KEY = '6LcM6xssAAAAAHiYf3RLqakle5VFqVXoOCCAbk0C' 
 RECAPTCHA_SECRET_KEY = '6LcM6xssAAAAAMXXQRTCv-yb_1w3SEQ7FTlWgUNz' 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'Тут має бути дуже довгий та секретний ключ!' 
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'fallback_secret_key')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
