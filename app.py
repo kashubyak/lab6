@@ -15,6 +15,7 @@ from sqlalchemy.exc import IntegrityError
 from flask_dance.contrib.google import make_google_blueprint, google
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
 RECAPTCHA_SITE_KEY = '6LcM6xssAAAAAHiYf3RLqakle5VFqVXoOCCAbk0C' 
 RECAPTCHA_SECRET_KEY = '6LcM6xssAAAAAMXXQRTCv-yb_1w3SEQ7FTlWgUNz' 
@@ -27,12 +28,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER', 'kashubyak514@gmail.com') 
-app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS', 'gdsh ujws fntc xpwy') 
+app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER') 
+app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS') 
 app.config['MAIL_DEFAULT_SENDER'] = ('Security App', app.config['MAIL_USERNAME'])
 
-app.config["GOOGLE_OAUTH_CLIENT_ID"] = os.environ.get("GOOGLE_OAUTH_CLIENT_ID", "607554969368-pj5hbs1vlcdt7jv1a3mka2vq4chfen5v.apps.googleusercontent.com")
-app.config["GOOGLE_OAUTH_CLIENT_SECRET"] = os.environ.get("GOOGLE_OAUTH_CLIENT_SECRET", "ВАШ_GOOGLE_CLIENT_SECRET")
+app.config["GOOGLE_OAUTH_CLIENT_ID"] = os.environ.get("GOOGLE_OAUTH_CLIENT_ID")
+app.config["GOOGLE_OAUTH_CLIENT_SECRET"] = os.environ.get("GOOGLE_OAUTH_CLIENT_SECRET")
 
 google_bp = make_google_blueprint(
     client_id=app.config["GOOGLE_OAUTH_CLIENT_ID"],
@@ -40,6 +41,7 @@ google_bp = make_google_blueprint(
     scope=["profile", "email"],
     redirect_to="google_login_callback"
 )
+google_bp.authorization_url_params["prompt"] = "select_account"
 app.register_blueprint(google_bp, url_prefix="/login")
 
 db = SQLAlchemy(app)
@@ -485,7 +487,7 @@ def setup_2fa():
         else:
             flash('Неправильний код 2FA. Спробуйте ще раз.', 'danger')
             
-    return render_template('setup_2fa.html', qr_code_base64=qr_code_base64, secret=user.two_factor_secret)
+    return render_template('setup_2fa.html', qr_code_base64=qr_code_base64)
 
 @app.route('/profile/disable_2fa', methods=['POST'])
 def disable_2fa():
