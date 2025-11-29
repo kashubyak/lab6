@@ -28,10 +28,9 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER', 'kashubyak514@gmail.com') 
-app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS', 'gaqnig-4ropQe-sybnab') 
+app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS', 'gdsh ujws fntc xpwy') 
 app.config['MAIL_DEFAULT_SENDER'] = ('Security App', app.config['MAIL_USERNAME'])
 
-# Налаштування Google OAuth
 app.config["GOOGLE_OAUTH_CLIENT_ID"] = os.environ.get("GOOGLE_OAUTH_CLIENT_ID", "607554969368-pj5hbs1vlcdt7jv1a3mka2vq4chfen5v.apps.googleusercontent.com")
 app.config["GOOGLE_OAUTH_CLIENT_SECRET"] = os.environ.get("GOOGLE_OAUTH_CLIENT_SECRET", "ВАШ_GOOGLE_CLIENT_SECRET")
 
@@ -486,7 +485,7 @@ def setup_2fa():
         else:
             flash('Неправильний код 2FA. Спробуйте ще раз.', 'danger')
             
-    return render_template('setup_2fa.html', qr_code_base64=qr_code_base64)
+    return render_template('setup_2fa.html', qr_code_base64=qr_code_base64, secret=user.two_factor_secret)
 
 @app.route('/profile/disable_2fa', methods=['POST'])
 def disable_2fa():
